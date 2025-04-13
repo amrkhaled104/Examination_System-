@@ -63,7 +63,7 @@ namespace Examination_System
 
             if (!string.IsNullOrEmpty(Explanation))
             {
-                Console.WriteLine($"\n✨ Explanation:\n{Explanation}");
+                Console.WriteLine($"\n Explanation:\n{Explanation}");
             }
             else
             {
@@ -104,7 +104,7 @@ namespace Examination_System
 
             if (!string.IsNullOrEmpty(Explanation))
             {
-                Console.WriteLine($"\n✨ Explanation:\n{Explanation}");
+                Console.WriteLine($"\n Explanation:\n{Explanation}");
             }
             else
             {
