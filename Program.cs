@@ -156,11 +156,12 @@ namespace Examination_System
             }
 
             newSubject.CreateExam(finalExam);
-            Console.WriteLine("✅ Final exam created successfully.\n");
+            Console.WriteLine("Final exam created successfully.\n");
         }
 
 
         #endregion
+
 
         #region DisplayMCQBank
         public static void DisplayMCQBank(string subjectName)
@@ -263,6 +264,7 @@ namespace Examination_System
 
         #endregion
 
+
         #region DisplayExam
         static void DisplayExam()
         {
@@ -276,29 +278,23 @@ namespace Examination_System
 
             if (subject == null)
             {
-                Console.WriteLine("❌ Subject not found.");
-                return;
-            }
-
-            if (subject.Exam == null)
-            {
-                Console.WriteLine("❌ No exam has been created for this subject.");
+                Console.WriteLine("Subject not found.");
                 return;
             }
 
             Exam exam = null;
+            if (examType == "final")
+            {
+                exam = subject.FinalExam;
+            }
+            else if (examType == "practical")
+            {
+                exam = subject.PracticalExam;
+            }
 
-            if (examType == "final" && subject.Exam is FinalExam)
+            if (exam == null)
             {
-                exam = subject.Exam as FinalExam;
-            }
-            else if (examType == "practical" && subject.Exam is PracticalExam)
-            {
-                exam = subject.Exam as PracticalExam;
-            }
-            else
-            {
-                Console.WriteLine("❌ Exam type doesn't match the stored exam for this subject.");
+                Console.WriteLine(" No exam created for this subject or type.");
                 return;
             }
 
@@ -306,14 +302,17 @@ namespace Examination_System
 
             if (exam.Questions == null || exam.Questions.Count == 0)
             {
-                Console.WriteLine("⚠️ No questions available in this exam.");
+                Console.WriteLine(" No questions available in this exam.");
                 return;
             }
 
-            Console.WriteLine($"\n📘 --- {examType.ToUpper()} Exam for {subjectName} ---");
+            // عرض الامتحان
+            Console.WriteLine($"\n --- {examType.ToUpper()} Exam for {subjectName} ---");
             exam.ShowExam();
         }
+
         #endregion
+
 
         #region CreatePracticalExam
         public static void CreatePracticalExam()
@@ -378,35 +377,6 @@ namespace Examination_System
             Console.WriteLine("Practical exam created successfully.\n");
         }
 
-
-        #endregion
-
-        #region UserMenu
-        static void UserMenu()
-        {
-            Console.WriteLine("\nUser Menu:");
-            Console.WriteLine("1. Take Final Exam");
-            Console.WriteLine("2. Take Practical Exam");
-            Console.WriteLine("3. View Exam Results");
-            Console.Write("Choose an option: ");
-            int choice = int.Parse(Console.ReadLine());
-
-            switch (choice)
-            {
-                case 1:
-                    TakeFinalExam();
-                    break;
-                case 2:
-                    TakePracticalExam();
-                    break;
-                case 3:
-                    ViewExamResults();
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice, try again.");
-                    break;
-            }
-        }
 
         #endregion
 
@@ -542,7 +512,7 @@ namespace Examination_System
                     newQ.CorrectChoiceIndex = Console.ReadLine()[0];
 
                     list.Add(newQ);
-                    Console.WriteLine("✅ Question added.");
+                    Console.WriteLine(" Question added.");
                     break;
 
                 case "3":
@@ -652,18 +622,53 @@ namespace Examination_System
         #endregion
 
 
+        #region UserMenu
+        static void UserMenu()
+        {
+            Console.WriteLine("\nUser Menu:");
+            Console.WriteLine("1. Take Final Exam");
+            Console.WriteLine("2. Take Practical Exam");
+            Console.WriteLine("3. View Exam Results");
+            Console.Write("Choose an option: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    TakeFinalExam();
+                    break;
+                case 2:
+                    TakePracticalExam();
+                    break;
+                case 3:
+                    ViewExamResults();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice, try again.");
+                    break;
+            }
+        }
+
+        #endregion
+
+
+        #region method for user
+
+
 
         static void TakeFinalExam()
-                {
-                    
-                }
+        {
 
-                static void TakePracticalExam()
-                {
-                }
+        }
 
-                static void ViewExamResults()
-                {
-                }
+        static void TakePracticalExam()
+        {
+        }
+
+        static void ViewExamResults()
+        {
+        }
+        #endregion
     }
+
 }

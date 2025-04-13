@@ -83,6 +83,9 @@ namespace Examination_System
         }
     }
     #endregion
+
+
+    #region TrueFalseQuestion
     public class TrueFalseQuestion : Question
     {
         private bool _correctAnswer;
@@ -90,7 +93,7 @@ namespace Examination_System
         public bool CorrectAnswer
         {
             get => _correctAnswer;
-            set => _correctAnswer = value; 
+            set => _correctAnswer = value;
         }
         public override void Display()
         {
@@ -113,4 +116,6 @@ namespace Examination_System
         }
 
     }
+    #endregion
+
 }
