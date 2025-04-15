@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace Examination_System
 {
+    #region Question
     public abstract class Question
     {
-        public string Header { get; set; }  
-        public string Body { get; set; }    
+        public string Header { get; set; }
+        public string Body { get; set; }
         public float Mark { get; set; }
-        public string Explanation { get; set; } 
+        public string Explanation { get; set; }
 
         public abstract void Display();
         public abstract void ShowCorrectAnswerWithExplanation();
 
 
     }
-    #region  McQ Question
+    #endregion
+
+
+    #region  McQ Question class
 
     public class MCQQuestion : Question
     {
@@ -85,7 +89,7 @@ namespace Examination_System
     #endregion
 
 
-    #region TrueFalseQuestion
+    #region TrueFalseQuestion class
     public class TrueFalseQuestion : Question
     {
         private bool _correctAnswer;

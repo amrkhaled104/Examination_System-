@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Examination_System
 {
+    #region Exam class
     public abstract class Exam
     {
         public int Time { get; set; }
@@ -24,6 +25,9 @@ namespace Examination_System
             }
         }
     }
+    #endregion
+
+    #region FinalExam
     public class FinalExam : Exam
     {
         public List<MCQQuestion> MCQList { get; set; }
@@ -38,6 +42,9 @@ namespace Examination_System
                 Questions.AddRange(TFList);
         }
     }
+    #endregion
+
+    #region PracticalExam class
     public class PracticalExam : Exam
     {
         public List<MCQQuestion> MCQList { get; set; }
@@ -48,5 +55,7 @@ namespace Examination_System
                 Questions.AddRange(MCQList);
         }
     }
+    #endregion
+
 
 }

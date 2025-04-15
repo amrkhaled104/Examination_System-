@@ -33,7 +33,7 @@ namespace Examination_System
             }
            
         }
-        #region Admin
+        #region AdminMenu
         static void AdminMenu()
         {
             Console.WriteLine("\nAdmin Menu:");
@@ -65,6 +65,7 @@ namespace Examination_System
         }
 
         #endregion
+
 
         #region CreateFinalExam
         public static void CreateFinalExam()
@@ -155,6 +156,7 @@ namespace Examination_System
                 }
             }
 
+            finalExam.CreateExam();
             newSubject.CreateExam(finalExam);
             Console.WriteLine("Final exam created successfully.\n");
         }
@@ -218,7 +220,10 @@ namespace Examination_System
                     break;
             }
         }
+        #endregion
 
+
+        #region DisplayTFBank
         public static void DisplayTFBank(string subjectName)
         {
             switch (subjectName)
@@ -306,7 +311,6 @@ namespace Examination_System
                 return;
             }
 
-            // عرض الامتحان
             Console.WriteLine($"\n --- {examType.ToUpper()} Exam for {subjectName} ---");
             exam.ShowExam();
         }
@@ -372,7 +376,7 @@ namespace Examination_System
                         break;
                 }
             }
-
+            practicalExam.CreateExam();
             newSubject.CreateExam(practicalExam);
             Console.WriteLine("Practical exam created successfully.\n");
         }
@@ -621,14 +625,13 @@ namespace Examination_System
         }
         #endregion
 
-
+        //USER
         #region UserMenu
         static void UserMenu()
         {
             Console.WriteLine("\nUser Menu:");
             Console.WriteLine("1. Take Final Exam");
             Console.WriteLine("2. Take Practical Exam");
-            Console.WriteLine("3. View Exam Results");
             Console.Write("Choose an option: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -640,9 +643,6 @@ namespace Examination_System
                 case 2:
                     TakePracticalExam();
                     break;
-                case 3:
-                    ViewExamResults();
-                    break;
                 default:
                     Console.WriteLine("Invalid choice, try again.");
                     break;
@@ -652,22 +652,114 @@ namespace Examination_System
         #endregion
 
 
-        #region method for user
-
-
+        #region TakeFinalExam
 
         static void TakeFinalExam()
         {
+            Console.Write("Enter your name: ");
+            string studentName = Console.ReadLine();
 
+            Console.Write("Enter your code: ");
+            string studentCode = Console.ReadLine();
+
+            Console.Write("Enter subject name: ");
+            string subjectName = Console.ReadLine();
+
+            var subject = subjects.FirstOrDefault(s => s.SubjectName.Equals(subjectName, StringComparison.OrdinalIgnoreCase));
+
+            if (subject == null || subject.FinalExam == null)
+            {
+                Console.WriteLine(" Subject not found or no final exam available.");
+                return;
+            }
+
+            Console.WriteLine($"\n Final Exam for {subjectName.ToUpper()}");
+            StartExam(subject.FinalExam);
         }
 
+        #endregion
+
+
+        #region TakePracticalExam
         static void TakePracticalExam()
         {
+            Console.Write("Enter your name: ");
+            string studentName = Console.ReadLine();
+
+            Console.Write("Enter your code: ");
+            string studentCode = Console.ReadLine();
+
+            Console.Write("Enter subject name: ");
+            string subjectName = Console.ReadLine();
+
+            var subject = subjects.FirstOrDefault(s => s.SubjectName.Equals(subjectName, StringComparison.OrdinalIgnoreCase));
+
+            if (subject == null || subject.PracticalExam == null)
+            {
+                Console.WriteLine("❌ Subject not found or no practical exam available.");
+                return;
+            }
+
+            Console.WriteLine($"\n🧪 Practical Exam for {subjectName.ToUpper()}");
+            StartExam(subject.PracticalExam);
+        }
+        #endregion
+
+        #region StartExam
+        static void StartExam(Exam exam)
+        {
+            if (exam.Questions == null || exam.Questions.Count == 0)
+            {
+                exam.CreateExam();
+            }
+            float totalMarks = 0;
+            float obtainedMarks = 0;
+
+            foreach (var q in exam.Questions)
+            {
+                Console.WriteLine("\n--------------------------");
+                q.Display();
+
+                Console.Write("Your answer: ");
+                string userAnswer = Console.ReadLine();
+
+                bool correct = false;
+
+                if (q is MCQQuestion mcq)
+                {
+                    if (!string.IsNullOrWhiteSpace(userAnswer) &&
+                        char.ToUpper(userAnswer[0]) == mcq.CorrectChoiceIndex)
+                    {
+                        correct = true;
+                    }
+                }
+                else if (q is TrueFalseQuestion tf)
+                {
+                    if ((userAnswer == "1" && tf.CorrectAnswer) || (userAnswer == "2" && !tf.CorrectAnswer))
+                    {
+                        correct = true;
+                    }
+                }
+
+                if (correct)
+                {
+                    Console.WriteLine(" Correct!");
+                    obtainedMarks += q.Mark;
+                }
+                else
+                {
+                    Console.WriteLine(" Wrong!");
+                    q.ShowCorrectAnswerWithExplanation();
+                }
+
+                totalMarks += q.Mark;
+            }
+
+            Console.WriteLine("\n=========================");
+            Console.WriteLine($" Exam finished. Your score: {obtainedMarks} / {totalMarks}");
+            Console.WriteLine($" Percentage: {(obtainedMarks / totalMarks) * 100:F2}%");
         }
 
-        static void ViewExamResults()
-        {
-        }
         #endregion
     }
 
